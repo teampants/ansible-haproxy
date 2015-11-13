@@ -18,6 +18,7 @@
     owner: root
     group: root
     mode: 0755
+  notify: restart haproxy
 
 - name: Copy haproxy rsyslog config
   copy:
@@ -26,4 +27,7 @@
     owner: root
     group: root
     mode: 0644
+  notify:
+    - restart rsyslog
+    - restart haproxy
 
