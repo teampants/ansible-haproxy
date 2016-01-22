@@ -1,0 +1,33 @@
+---
+- name: Add haproxy 1.6 repository
+  apt_repository:
+    repo: 'ppa:vbernat/haproxy-1.6'
+    state: present
+    update_cache: yes
+
+- name: Install haproxy 2.0
+  apt:
+    package: haproxy
+    state: present
+
+- name: Copy haproxy SysV init script
+  # Modified version of the init script is needed to incorporate this patch: https://launchpadlibrarian.net/212312784/fix-lp-1477198-trusty.patch
+  copy:
+    src: "init.d/haproxy"
+    dest: "/etc/init.d/haproxy"
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart haproxy
+
+- name: Copy haproxy rsyslog config
+  copy:
+    src: "rsyslog.d/49-haproxy.conf"
+    dest: "/etc/rsyslog.d/49-haproxy.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart rsyslog
+    - restart haproxy
+

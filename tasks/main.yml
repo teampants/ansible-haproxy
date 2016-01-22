@@ -1,0 +1,9 @@
+---
+- include: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Enable haproxy at boot
+  service:
+    name: haproxy
+    enabled: yes
+  notify: restart haproxy

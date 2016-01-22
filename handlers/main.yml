@@ -1,0 +1,10 @@
+---
+- name: restart haproxy
+  service:
+    name: haproxy
+    state: restarted
+
+- name: restart rsyslog
+  # http://stackoverflow.com/questions/30162528/ansible-service-restart-failed
+  command: service rsyslog restart
+  notify: restart haproxy
